@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "id": "modid",
+  "version": "${version}",
+  "name": "Example Mod",
+  "description": "This is an example description! Tell everyone what your mod is about!",
+  "authors": [
+    "Me!"
+  ],
+  "license": "CC0-1.0",
+  "icon": "assets/modid/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.fabricmc.example.ExampleMod"
+    ]
+  },
+  "mixins": [
+    "modid.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.19",
+    "minecraft": "1.8.9"
+  },
+  "suggests": {
+    "another-mod": "*"
+  },
+  "custom": {
+    "felt-loom:overlays": {
+      "net/minecraft/class_2248": [
+        {
+          "visibility": "public",
+          "static": true,
+          "type": "field",
+          "signature": "anotherNewStaticFieldThatDidNotExist:I"
+        },
+        {
+          "visibility": "public",
+          "static": false,
+          "type": "field",
+          "signature": "anotherNewFieldThatDidNotExist:I"
+        },
+        {
+          "visibility": "public",
+          "static": true,
+          "type": "method",
+          "signature": "anotherNewStaticMethodThatDidNotExist()V"
+        },
+        {
+          "visibility": "public",
+          "static": false,
+          "type": "method",
+          "signature": "anotherNewMethodThatDidNotExist(Lnet/minecraft/class_2248;)[Lnet/minecraft/class_2248;"
+        },
+        {
+          "visibility": "public",
+          "static": true,
+          "type": "field",
+          "signature": "newStaticFieldThatDidNotExist:I"
+        },
+        {
+          "visibility": "public",
+          "static": false,
+          "type": "field",
+          "signature": "newFieldThatDidNotExist:I"
+        },
+        {
+          "visibility": "public",
+          "static": true,
+          "type": "method",
+          "signature": "newStaticMethodThatDidNotExist()V"
+        },
+        {
+          "visibility": "public",
+          "static": false,
+          "type": "method",
+          "signature": "newMethodThatDidNotExist()V"
+        }
+      ]
+    }
+  }
+}

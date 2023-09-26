@@ -1,0 +1,82 @@
+plugins {
+    id 'maven-publish'
+    // Apply the Java Gradle plugin development plugin to add support for developing Gradle plugins
+    id 'java-gradle-plugin'
+}
+
+repositories {
+    // Use Maven Central for resolving dependencies.
+    // You can declare any Maven/Ivy/file repository here.
+    mavenCentral()
+    maven {
+        name = 'Fabric'
+        url = 'https://maven.fabricmc.net/'
+    }
+}
+
+dependencies {
+    // Use JUnit test framework for unit tests
+    testImplementation 'junit:junit:4.13'
+
+    implementation ('com.google.code.gson:gson:2.10.1')
+    implementation ('com.google.guava:guava:31.1-jre')
+
+    implementation "org.ow2.asm:asm:${project.asm_version}"
+    implementation "org.ow2.asm:asm-commons:${project.asm_version}"
+    implementation "org.ow2.asm:asm-tree:${project.asm_version}"
+    implementation "org.ow2.asm:asm-util:${project.asm_version}"
+    implementation "org.ow2.asm:asm-analysis:${project.asm_version}"
+
+    implementation ("net.fabricmc:fabric-loom:" + project.loom_version)
+
+    compileOnly ("net.fabricmc:mapping-io:0.2.1")
+}
+
+gradlePlugin {
+    // Define the plugin
+
+    plugins {
+        spindle {
+            id = 'felt-spindle'
+            implementationClass = 'net.feltmc.spindle.SpindlePlugin'
+        }
+    }
+}
+
+import org.w3c.dom.Document
+import org.w3c.dom.Element
+import org.w3c.dom.Node
+
+publishing {
+    publications {
+        // Also publish a snapshot so people can use the latest version if they wish
+        snapshot(MavenPublication) { publication ->
+            groupId project.group
+            artifactId project.base.archivesName.get()
+            version project.version + '-SNAPSHOT'
+
+            from components.java
+        }
+
+        // Manually crate the plugin marker for snapshot versions
+        snapshotPlugin(MavenPublication) { publication ->
+            groupId 'felt-spindle'
+            artifactId 'felt-spindle.gradle.plugin'
+            version project.version + '-SNAPSHOT'
+
+            pom.withXml({
+                // Based off org.gradle.plugin.devel.plugins.MavenPluginPublishPlugin
+                Element root = asElement()
+                Document document = root.getOwnerDocument()
+                Node dependencies = root.appendChild(document.createElement('dependencies'))
+                Node dependency = dependencies.appendChild(document.createElement('dependency'))
+                Node groupId = dependency.appendChild(document.createElement('groupId'))
+                groupId.setTextContent('net.feltmc')
+                Node artifactId = dependency.appendChild(document.createElement('artifactId'))
+                artifactId.setTextContent('felt-spindle')
+                Node version = dependency.appendChild(document.createElement('version'))
+                version.setTextContent(baseVersion + '-SNAPSHOT')
+            })
+        }
+    }
+}
