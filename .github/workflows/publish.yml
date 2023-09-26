@@ -22,7 +22,7 @@ jobs:
           token: ${{ secrets.github_token }}
           prefix: "build/${{ github.ref }}"
 
-      - run: ./gradlew build publish -x test --stacktrace
+      - run: ./gradlew build :felt-spindle:publish -x test --stacktrace
         env:
           MAVEN_USERNAME: ${{ secrets.MAVEN_PUBLISH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.MAVEN_PUBLISH_TOKEN }}
