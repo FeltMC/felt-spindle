@@ -20,13 +20,13 @@
   ],
   "depends": {
     "fabricloader": ">=0.14.19",
-    "minecraft": "1.8.9"
+    "minecraft": "1.20.1"
   },
   "suggests": {
     "another-mod": "*"
   },
   "custom": {
-    "felt-loom:overlays": {
+    "felt-spindle:overlays": {
       "net/minecraft/class_2248": [
         {
           "visibility": "public",

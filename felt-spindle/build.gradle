@@ -4,6 +4,17 @@ plugins {
     id 'java-gradle-plugin'
 }
 
+group = 'net.feltmc'
+archivesBaseName = project.name
+def baseVersion = project.base_version
+
+def ENV = System.getenv()
+if (ENV.BUILD_NUMBER) {
+    version = baseVersion + '.' + ENV.BUILD_NUMBER
+} else {
+    version = baseVersion + '.local'
+}
+
 repositories {
     // Use Maven Central for resolving dependencies.
     // You can declare any Maven/Ivy/file repository here.
@@ -52,17 +63,17 @@ publishing {
         // Also publish a snapshot so people can use the latest version if they wish
         snapshot(MavenPublication) { publication ->
             groupId project.group
-            artifactId project.base.archivesName.get()
-            version project.version + '-SNAPSHOT'
+            artifactId project.archivesBaseName
+            version baseVersion + '-SNAPSHOT'
 
             from components.java
         }
 
         // Manually crate the plugin marker for snapshot versions
         snapshotPlugin(MavenPublication) { publication ->
-            groupId 'felt-spindle'
-            artifactId 'felt-spindle.gradle.plugin'
-            version project.version + '-SNAPSHOT'
+            groupId "felt-spindle"
+            artifactId "felt-spindle.gradle.plugin"
+            version baseVersion + '-SNAPSHOT'
 
             pom.withXml({
                 // Based off org.gradle.plugin.devel.plugins.MavenPluginPublishPlugin
@@ -77,6 +88,19 @@ publishing {
                 Node version = dependency.appendChild(document.createElement('version'))
                 version.setTextContent(baseVersion + '-SNAPSHOT')
             })
+        }
+    }
+
+    repositories {
+        maven {
+            url "https://repo.repsy.io/mvn/distant/feltmc"
+            credentials {
+                username ENV.MAVEN_USERNAME
+                password ENV.MAVEN_PASSWORD
+            }
+            authentication {
+                basic(BasicAuthentication)
+            }
         }
     }
 }

@@ -294,12 +294,12 @@ public abstract class ClassOverlayProcessor implements MinecraftJarProcessor<Cla
 		}
 	}
 
-	private static final String FELT_LOOM_OVERLAYS = "felt-loom:overlays";
+	private static final String FMJ_KEY = "felt-spindle:overlays";
 
 	private record OverlayedClass(String modId, String targetName, List<Overlay> overlays) {
 		public static List<OverlayedClass> fromMod(FabricModJson fabricModJson) {
 			final String modId = fabricModJson.getId();
-			final JsonElement jsonElement = fabricModJson.getCustom(FELT_LOOM_OVERLAYS);
+			final JsonElement jsonElement = fabricModJson.getCustom(FMJ_KEY);
 
 			if (jsonElement == null) {
 				return Collections.emptyList();
