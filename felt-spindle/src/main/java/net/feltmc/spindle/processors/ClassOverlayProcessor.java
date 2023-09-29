@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package net.feltmc.spindle;
+package net.feltmc.spindle.processors;
 
 import java.io.IOException;
 import java.nio.file.Path;
