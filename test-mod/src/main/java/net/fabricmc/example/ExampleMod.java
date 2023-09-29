@@ -1,8 +1,8 @@
 package net.fabricmc.example;
 
 import net.fabricmc.api.ModInitializer;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 
 public class ExampleMod implements ModInitializer {
 	@Override

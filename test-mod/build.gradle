@@ -13,7 +13,10 @@ repositories {
 
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings("net.fabricmc:yarn:${project.minecraft_version}+build.${project.yarn_build}:v2")
+	mappings loom.layered() {
+		officialMojangMappings()
+		//parchment("org.parchmentmc.data:parchment-1.20.1:2023.06.26@zip")
+	}
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	// You can retrieve a specific api module using this notation.
