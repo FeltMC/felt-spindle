@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e;
+
 NEW_BASE_VERSION="$(grep "^base_version=" ./felt-spindle/gradle.properties | cut -d'=' -f2)";
 if [ "$BASE_VERSION" == "$NEW_BASE_VERSION" ]; then
 	(( PATCH_VERSION++ ));
