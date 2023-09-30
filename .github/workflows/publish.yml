@@ -13,27 +13,15 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: gradle/wrapper-validation-action@v1
-
-      - name: Publish to Maven
-        run: |
-          ./gradlew build :felt-spindle:publish -x test --stacktrace;
-          gh api \
-            --method PATCH \
-            -H "Accept: application/vnd.github+json" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            ${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/actions/variables/BASE_VERSION \
-            -f name='BASE_VERSION' \
-            -f value="${BASE_VERSION}";
-          gh api \
-            --method PATCH \
-            -H "Accept: application/vnd.github+json" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            ${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/actions/variables/PATCH_VERSION \
-            -f name='PATCH_VERSION' \
-            -f value="${PATCH_VERSION}";
+        
+      - name: Bump Version
+        run: ./bump_version.sh;
         env:
-          CI: true
           BASE_VERSION: ${{ vars.BASE_VERSION }}
           PATCH_VERSION: ${{ vars.PATCH_VERSION }}
+
+      - name: Publish to Maven
+        run: ./gradlew build :felt-spindle:publish -x test --stacktrace;
+        env:
           MAVEN_USERNAME: ${{ secrets.MAVEN_PUBLISH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.MAVEN_PUBLISH_TOKEN }}
