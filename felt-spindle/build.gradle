@@ -10,9 +10,9 @@ def baseVersion = project.base_version
 
 def ENV = System.getenv()
 if (ENV.CI) {
-    version = baseVersion + ENV.PATCH_VERSION
+    version = "${baseVersion}.${ENV.PATCH_VERSION}"
 } else {
-    version = baseVersion + '.local'
+    version = "${baseVersion}.local"
 }
 
 repositories {
