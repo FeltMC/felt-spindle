@@ -5,14 +5,10 @@ on:
       - 'master'
 
 jobs:
-  build:
-    runs-on: ubuntu-22.04
-    container:
-      image: eclipse-temurin:17-jdk
-      options: --user root
+  bump-version:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: gradle/wrapper-validation-action@v1
         
       - name: Bump Version
         run: ./bump_version.sh;
@@ -20,9 +16,19 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BASE_VERSION: ${{ vars.BASE_VERSION }}
           PATCH_VERSION: ${{ vars.PATCH_VERSION }}
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: eclipse-temurin:17-jdk
+      options: --user root
+    steps:
+      - uses: actions/checkout@v3
+      - uses: gradle/wrapper-validation-action@v1
 
       - name: Publish to Maven
         run: ./gradlew build :felt-spindle:publish -x test --stacktrace;
         env:
+          BASE_VERSION: ${{ vars.BASE_VERSION }}
+          PATCH_VERSION: ${{ vars.PATCH_VERSION }}
           MAVEN_USERNAME: ${{ secrets.MAVEN_PUBLISH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.MAVEN_PUBLISH_TOKEN }}
