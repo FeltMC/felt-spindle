@@ -17,7 +17,6 @@ jobs:
       - name: Bump Version
         run: ./bump_version.sh;
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BASE_VERSION: ${{ vars.BASE_VERSION }}
           PATCH_VERSION: ${{ vars.PATCH_VERSION }}
 
