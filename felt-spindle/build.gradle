@@ -9,8 +9,16 @@ archivesBaseName = project.name
 def baseVersion = project.base_version
 
 def ENV = System.getenv()
-if (ENV.BUILD_NUMBER) {
-    version = baseVersion + '.' + ENV.BUILD_NUMBER
+if (ENV.CI) {
+    if (!ENV.BASE_VERSION) {
+        ENV.BASE_VERSION = baseVersion
+        ENV.PATCH_VERSION = 0
+    } else if (!ENV.PATCH_VERSION || ENV.BASE_VERSION != baseVersion) {
+        ENV.PATCH_VERSION = 0
+    } else {
+        ENV.PATCH_VERSION = Integer.parseInt(ENV.PATCH_VERSION) + 1
+    }
+    version = baseVersion + ENV.PATCH_VERSION
 } else {
     version = baseVersion + '.local'
 }
