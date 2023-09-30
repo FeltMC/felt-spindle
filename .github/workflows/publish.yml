@@ -6,7 +6,7 @@ on:
 
 permissions:
   contents: read
-  actions_variables: write
+  actions: write
 
 jobs:
   bump-version:
